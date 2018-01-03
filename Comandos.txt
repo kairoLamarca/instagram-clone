@@ -1,1 +1,3 @@
 npm install --save bootstrap@4.0.0-beta.3 jquery popper.js
+
+ng g c acesso/cadastro --cria um componente dentro de outro
