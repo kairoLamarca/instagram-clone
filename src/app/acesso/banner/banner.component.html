@@ -1,6 +1,8 @@
-<button (click)="toggleEstado()">Teste</button>
+<!-- <button (click)="toggleEstado()">Teste</button> -->
 <div class="banner-background">
     <!-- @banner Conexão do elemento com a trigger -->
     <!-- estado é a variavel da classe com o valor do estado -->
-    <img src="/assets/banner-acesso/img_1.png" [@banner]="estado" />
+    <img *ngFor="let imagem of imagens" 
+        [src]="imagem.url" 
+        [@banner]="imagem.estado" />
 </div>
