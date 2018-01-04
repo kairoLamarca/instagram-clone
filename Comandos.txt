@@ -5,3 +5,5 @@ ng g c acesso/cadastro --cria um componente dentro de outro
 npm install --save @angular/animations
 
 npm install --save web-animations-js
+
+https://angular.io/guide/animations
