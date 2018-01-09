@@ -8,6 +8,6 @@ npm install --save web-animations-js
 
 https://angular.io/guide/animations
 
-npm install --save firebase
+npm install --save firebase@4.8.0
 
 https://firebase.google.com/
