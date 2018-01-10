@@ -42,7 +42,7 @@ export class Autenticacao {
                 firebase.auth().currentUser.getIdToken() //esse método recupera o token_id do processo de autenticação
                     .then((idToken: string) => {
                         this.token_id = idToken;
-
+                        localStorage.setItem('idToken', idToken); //Gravando o idToken no LocalStorage do Browser para ser recuperado depois
                         this.router.navigate(['/home']); //redirecionando para a rota /home se der certo o login
                     })
             })
@@ -50,7 +50,11 @@ export class Autenticacao {
     }
 
     public autenticado(): boolean {
-        console.log('token:' ,this.token_id);
+
+        if (this.token_id === undefined && localStorage.getItem('idToken') != null) {
+            this.token_id = localStorage.getItem('idToken');//recupera a chave idToken no localStorage
+        }
+
         return this.token_id !== undefined;
     }
 }
