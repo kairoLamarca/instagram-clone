@@ -57,4 +57,13 @@ export class Autenticacao {
 
         return this.token_id !== undefined;
     }
+
+    public sair(): void {
+        firebase.auth().signOut()//remove o token de autenticação do firebase
+            .then(() => {
+                localStorage.removeItem('idToken');//remove o token do LocalStorage;
+                this.token_id = undefined;
+                this.router.navigate(['/']);
+            })
+    }
 }
