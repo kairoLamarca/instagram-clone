@@ -1,9 +1,15 @@
+import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Usuario } from './acesso/usuario.model';
 import * as firebase from 'firebase';
 
+//@Injectable serve para injetar uma service dentro deste service
+@Injectable()
 export class Autenticacao {
 
     public token_id: string;
+
+    constructor(private router: Router) { }
 
     public cadastrarUsuario(usuario: Usuario): Promise<any> {
         console.log('ta aqui', usuario);
@@ -37,7 +43,7 @@ export class Autenticacao {
                     .then((idToken: string) => {
                         this.token_id = idToken;
 
-                        console.log(this.token_id);
+                        this.router.navigate(['/home']); //redirecionando para a rota /home se der certo o login
                     })
             })
             .catch((error: Error) => console.log(error))
