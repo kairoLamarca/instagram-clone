@@ -15,3 +15,5 @@ https://firebase.google.com/
 ng g c home
 
 ng g c home/publicacoes
+
+https://jwt.io/ --web tokens
