@@ -55,6 +55,10 @@ export class Autenticacao {
             this.token_id = localStorage.getItem('idToken');//recupera a chave idToken no localStorage
         }
 
+        if (this.token_id === undefined) {
+            this.router.navigate(['/']);
+        }
+
         return this.token_id !== undefined;
     }
 
