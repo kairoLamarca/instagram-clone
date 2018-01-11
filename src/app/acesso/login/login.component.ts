@@ -15,7 +15,7 @@ export class LoginComponent implements OnInit {
   public mensagemErro: string = '';
 
   public formulario: FormGroup = new FormGroup({
-    'email': new FormControl(null, [Validators.required, Validators.minLength(1)]),
+    'email': new FormControl(null, [Validators.required]),
     'senha': new FormControl(null, [Validators.required, Validators.minLength(6)])
   })
 

@@ -29,10 +29,12 @@ export class Autenticacao {
                 firebase.database().ref(`usuario_detalhe/${btoa(usuario.email)}`)
                     //.push
                     .set(usuario)
+                
+                return '';
 
             })
             .catch((error: Error) => {
-                console.log(error);
+                return error.message;
             })
     }
 
