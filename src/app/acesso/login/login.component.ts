@@ -12,6 +12,8 @@ export class LoginComponent implements OnInit {
 
   @Output() public exibirPainel: EventEmitter<string> = new EventEmitter();
 
+  public mensagemErro: string = '';
+
   public formulario: FormGroup = new FormGroup({
     'email': new FormControl(null),
     'senha': new FormControl(null)
@@ -28,10 +30,13 @@ export class LoginComponent implements OnInit {
     this.exibirPainel.emit('cadastro');
   }
 
-  public autenticar(): void {
+  public autenticar(): void {   
     this.autenticacao.autenticar(
       this.formulario.value.email,
       this.formulario.value.senha
-    );
+    )
+      .then((retorno) => {
+        this.mensagemErro = retorno;
+      })
   }
 }
