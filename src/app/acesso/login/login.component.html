@@ -19,7 +19,8 @@
           formControlName="senha"
         >
       </div>
-      <button type="submit" class="btn btn-primary btn-sm btn-block">Entrar</button>
+      <button type="submit" class="btn btn-primary btn-sm btn-block" *ngIf="formulario.status === 'INVALID'" disabled="disabled">Entrar</button>
+      <button type="submit" class="btn btn-primary btn-sm btn-block" *ngIf="formulario.status === 'VALID'">Entrar</button>
     </form>
     <hr />
 
