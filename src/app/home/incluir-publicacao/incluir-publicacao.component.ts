@@ -35,4 +35,9 @@ export class IncluirPublicacaoComponent implements OnInit {
     });
   }
 
+  public preparaImagemUpload(event: Event): void {
+    //tipagem do event para um html para poder recuperar o files
+    console.log((<HTMLInputElement>event.target).files);
+  }
+
 }
