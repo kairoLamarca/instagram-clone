@@ -11,6 +11,19 @@ export class Bd {
         firebase.storage().ref()
             .child(`imagens/${nomeImagem}`)
             .put(publicacao.imagem)
+            .on(firebase.storage.TaskEvent.STATE_CHANGED,
+                //companhamento do processo do upload
+                (snapshot: any) => {
+                    console.log(snapshot);
+                },
+                (error) => {
+                    console.log(error);
+                },
+                () => {
+                    //finalização do processo
+                    console.log('upload completo');
+                }
+            )
 
         //insere um novo dados no path publicacao/email_criptografado
         // firebase.database().ref(`publicacoes/${btoa(publicacao.email)}`)
