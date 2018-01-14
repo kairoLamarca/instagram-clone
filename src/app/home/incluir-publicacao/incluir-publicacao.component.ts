@@ -55,9 +55,7 @@ export class IncluirPublicacaoComponent implements OnInit {
     acompanhamentoUpload
       .takeUntil(continua)//ir até enquanto
       .subscribe(() => {
-        //vai executar a cada 1,5 segundos
-        console.log(this.progresso.status);
-        console.log(this.progresso.estado);
+        //vai executar a cada 1,5 segundos        
         this.prograssoPublicacao = 'andamento';
 
         this.porcentagemUpload = Math.round((this.progresso.estado.bytesTransferred / this.progresso.estado.totalBytes) * 100);
@@ -67,15 +65,10 @@ export class IncluirPublicacaoComponent implements OnInit {
           continua.next(false);
         }
       })
-
-    // console.log(this.progresso.status);
-    // console.log(this.progresso.estado);
   }
 
   public preparaImagemUpload(event: Event): void {
     //tipagem do event para um html para poder recuperar o files
-    console.log((<HTMLInputElement>event.target).files);
-
     this.imagem = (<HTMLInputElement>event.target).files;
   }
 
