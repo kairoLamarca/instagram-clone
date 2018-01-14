@@ -5,6 +5,10 @@ import * as firebase from 'firebase';
 import { Bd } from '../../bd.service';
 import { Progresso } from '../../progresso.service';
 
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+import 'rxjs/Rx';
+
 @Component({
   selector: 'app-incluir-publicacao',
   templateUrl: './incluir-publicacao.component.html',
@@ -38,8 +42,27 @@ export class IncluirPublicacaoComponent implements OnInit {
       imagem: this.imagem[0]
     });
 
-    console.log(this.progresso.status);
-    console.log(this.progresso.estado);
+    let acompanhamentoUpload = Observable.interval(1500);
+
+    //subject serve para submiter valores para o observable
+    let continua = new Subject
+
+    continua.next(true);
+
+    acompanhamentoUpload
+      .takeUntil(continua)//ir até enquanto
+      .subscribe(() => {
+        //vai executar a cada 1,5 segundos
+        console.log(this.progresso.status);
+        console.log(this.progresso.estado);
+
+        if (this.progresso.status === 'concluido') {
+          continua.next(false);
+        }
+      })
+
+    // console.log(this.progresso.status);
+    // console.log(this.progresso.estado);
   }
 
   public preparaImagemUpload(event: Event): void {
