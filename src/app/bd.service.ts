@@ -1,9 +1,13 @@
+import { Injectable } from '@angular/core';
 import * as firebase from 'firebase';
+import { Progresso } from './progresso.service';
 
+@Injectable()
 export class Bd {
-    public publicar(publicacao: any): void {
 
-        console.log(publicacao);
+    constructor(private progresso: Progresso) { }
+
+    public publicar(publicacao: any): void {
 
         let nomeImagem = Date.now(); //cria um nome pra imagem baseado em timestamp
 
@@ -14,14 +18,15 @@ export class Bd {
             .on(firebase.storage.TaskEvent.STATE_CHANGED,
                 //companhamento do processo do upload
                 (snapshot: any) => {
-                    console.log(snapshot);
+                    this.progresso.status = 'andamento';
+                    this.progresso.estado = snapshot;
                 },
                 (error) => {
-                    console.log(error);
+                    this.progresso.status = 'erro';
                 },
                 () => {
                     //finalização do processo
-                    console.log('upload completo');
+                    this.progresso.status = 'concluido';
                 }
             )
 
