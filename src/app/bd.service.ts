@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as firebase from 'firebase';
 import { Progresso } from './progresso.service';
+import { concat } from 'rxjs/operator/concat';
 
 @Injectable()
 export class Bd {
@@ -39,12 +40,41 @@ export class Bd {
 
     public consultaPublicacoes(emailUsuario: string): any {
 
+        //consultar as publicações (database)
         firebase.database().ref(`publicacoes/${btoa(emailUsuario)}`)
             //.on()//cria um listener, qualquer mudança no path, ele é notificado
             .once('value')
             .then((snapshot: any) => {
-                console.log(snapshot.val());
-            })
+                //console.log(snapshot.val());
+
+                let publicacoes: Array<any> = [];
+
+                snapshot.forEach((childSnapshot: any) => {
+
+                    let publicacao = childSnapshot.val();
+
+                    //consultar a url da imagem (storage)
+                    firebase.storage().ref()
+                        .child(`imagens/${childSnapshot.key}`)
+                        .getDownloadURL()
+                        .then((url: string) => {
+                            //console.log(url);
+                            publicacao.url_imagem = url;
+
+                            //consultar o nome do usuario
+                            firebase.database().ref(`usuario_detalhe/${btoa(emailUsuario)}`)
+                                .once('value')//faz a chamada
+                                .then((snapshot: any) => {
+                                    publicacao.nome_usuario = snapshot.val().nome_usuario;
+
+                                    publicacoes.push(publicacao);
+                                });                            
+                        });
+                });
+
+                console.log(publicacoes);
+
+            });
 
     }
 }
