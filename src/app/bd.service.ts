@@ -32,8 +32,19 @@ export class Bd {
                         //finalização do processo
                         this.progresso.status = 'concluido';
                     }
-                )
+                    )
             }
-        )
+            )
+    }
+
+    public consultaPublicacoes(emailUsuario: string): any {
+
+        firebase.database().ref(`publicacoes/${btoa(emailUsuario)}`)
+            //.on()//cria um listener, qualquer mudança no path, ele é notificado
+            .once('value')
+            .then((snapshot: any) => {
+                console.log(snapshot.val());
+            })
+
     }
 }
