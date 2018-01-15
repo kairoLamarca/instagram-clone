@@ -10,6 +10,7 @@ import * as firebase from 'firebase';
 export class PublicacoesComponent implements OnInit {
 
   public email: string;
+  public publicacoes: any;
 
   constructor(private bd: Bd) { }
 
@@ -17,12 +18,15 @@ export class PublicacoesComponent implements OnInit {
     firebase.auth().onAuthStateChanged((user) => {
       this.email = user.email;
 
-      this.atualiazarTimeLine();
+      this.atualizarTimeLine();
     })
   }
 
-  public atualiazarTimeLine(): void {
+  public atualizarTimeLine(): void {
     this.bd.consultaPublicacoes(this.email)
+      .then((publicacoes: any) => {
+        this.publicacoes = publicacoes;
+      })
   }
 
 }

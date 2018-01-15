@@ -38,43 +38,47 @@ export class Bd {
             )
     }
 
-    public consultaPublicacoes(emailUsuario: string): any {
+    public consultaPublicacoes(emailUsuario: string): Promise<any> {
 
-        //consultar as publicações (database)
-        firebase.database().ref(`publicacoes/${btoa(emailUsuario)}`)
-            //.on()//cria um listener, qualquer mudança no path, ele é notificado
-            .once('value')
-            .then((snapshot: any) => {
-                //console.log(snapshot.val());
+        //criando uma promise para retornar o valor
+        return new Promise((resolve, reject) => {
 
-                let publicacoes: Array<any> = [];
+            //consultar as publicações (database)
+            firebase.database().ref(`publicacoes/${btoa(emailUsuario)}`)
+                //.on()//cria um listener, qualquer mudança no path, ele é notificado
+                .once('value')
+                .then((snapshot: any) => {
+                    //console.log(snapshot.val());
 
-                snapshot.forEach((childSnapshot: any) => {
+                    let publicacoes: Array<any> = [];
 
-                    let publicacao = childSnapshot.val();
+                    snapshot.forEach((childSnapshot: any) => {
 
-                    //consultar a url da imagem (storage)
-                    firebase.storage().ref()
-                        .child(`imagens/${childSnapshot.key}`)
-                        .getDownloadURL()
-                        .then((url: string) => {
-                            //console.log(url);
-                            publicacao.url_imagem = url;
+                        let publicacao = childSnapshot.val();
 
-                            //consultar o nome do usuario
-                            firebase.database().ref(`usuario_detalhe/${btoa(emailUsuario)}`)
-                                .once('value')//faz a chamada
-                                .then((snapshot: any) => {
-                                    publicacao.nome_usuario = snapshot.val().nome_usuario;
+                        //consultar a url da imagem (storage)
+                        firebase.storage().ref()
+                            .child(`imagens/${childSnapshot.key}`)
+                            .getDownloadURL()
+                            .then((url: string) => {
+                                //console.log(url);
+                                publicacao.url_imagem = url;
 
-                                    publicacoes.push(publicacao);
-                                });                            
-                        });
-                });
+                                //consultar o nome do usuario
+                                firebase.database().ref(`usuario_detalhe/${btoa(emailUsuario)}`)
+                                    .once('value')//faz a chamada
+                                    .then((snapshot: any) => {
+                                        publicacao.nome_usuario = snapshot.val().nome_usuario;
 
-                console.log(publicacoes);
+                                        publicacoes.push(publicacao);
+                                    });
+                            });
+                    });
 
-            });
+                    resolve(publicacoes); //retorno da promise
 
+                }
+            );
+        })
     }
 }
