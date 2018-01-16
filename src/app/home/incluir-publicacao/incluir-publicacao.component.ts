@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import * as firebase from 'firebase';
 
@@ -16,6 +16,9 @@ import 'rxjs/Rx';
 })
 
 export class IncluirPublicacaoComponent implements OnInit {
+
+  //Output para expor o atributo para o componente pai
+  @Output() public atualizarTimeLine: EventEmitter<any> = new EventEmitter<any>();
 
   public email: string;
   private imagem: any;
@@ -63,6 +66,8 @@ export class IncluirPublicacaoComponent implements OnInit {
 
         if (this.progresso.status === 'concluido') {
           this.prograssoPublicacao = 'concluido';
+          //emitir um evento do componente parent (home)
+          this.atualizarTimeLine.emit();
           continua.next(false);
         }
       })
