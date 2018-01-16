@@ -10,7 +10,9 @@
 
 <br /><br /><br />
 <div class="container">
-  <app-publicacoes></app-publicacoes>   
-  <!-- Output do event do componenete filho -->
+  <!-- variavel de template -->
+  <app-publicacoes #publicacoes></app-publicacoes>   
+
+  <!-- Output do event do componenete filho (função da home)="função da incluir"-->
   <app-incluir-publicacao (atualizarTimeLine)="atualizarTimeLine()" ></app-incluir-publicacao>
 </div>
