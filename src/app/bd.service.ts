@@ -45,6 +45,7 @@ export class Bd {
 
             //consultar as publicações (database)
             firebase.database().ref(`publicacoes/${btoa(emailUsuario)}`)
+                .orderByKey()//critério de ordenação
                 //.on()//cria um listener, qualquer mudança no path, ele é notificado
                 .once('value')
                 .then((snapshot: any) => {
@@ -55,10 +56,22 @@ export class Bd {
                     snapshot.forEach((childSnapshot: any) => {
 
                         let publicacao = childSnapshot.val();
+                        publicacao.key = childSnapshot.key;
+
+                        publicacoes.push(publicacao);
+                    });
+
+                    //resolve(publicacoes); //retorno da promise
+
+                    return publicacoes.reverse();//inverte a ordenação
+                })
+                .then((publicacoes: any) => {
+
+                    publicacoes.forEach((publicacao) => {
 
                         //consultar a url da imagem (storage)
                         firebase.storage().ref()
-                            .child(`imagens/${childSnapshot.key}`)
+                            .child(`imagens/${publicacao.key}`)
                             .getDownloadURL()
                             .then((url: string) => {
                                 //console.log(url);
@@ -69,16 +82,12 @@ export class Bd {
                                     .once('value')//faz a chamada
                                     .then((snapshot: any) => {
                                         publicacao.nome_usuario = snapshot.val().nome_usuario;
-
-                                        publicacoes.push(publicacao);
                                     });
                             });
                     });
 
-                    resolve(publicacoes); //retorno da promise
-
-                }
-            );
+                    resolve(publicacoes);
+                })
         })
     }
 }
